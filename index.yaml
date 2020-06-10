@@ -1,5 +1,29 @@
 apiVersion: v1
 entries:
+  aaasvc:
+  - apiVersion: v1
+    appVersion: 0.3.1
+    created: "2020-06-10T11:07:57.513910914Z"
+    description: Choria AAA Server
+    digest: 61aef1040f4a7bcf288b5c201f8c951992e9010bc06696f518be24bda11ecb23
+    home: https://github.com/choria-io/aaasvc/
+    icon: https://choria.io/img/choria.png
+    keywords:
+    - choria
+    - iot
+    - authentication
+    - authorization
+    - auditing
+    maintainers:
+    - email: rip@devco.net
+      name: R.I.Pienaar
+      url: https://choria.io
+    name: aaasvc
+    sources:
+    - https://github.com/choria-io/aaasvc/
+    urls:
+    - https://github.com/choria-io/helm/releases/download/aaasvc-0.0.1/aaasvc-0.0.1.tgz
+    version: 0.0.1
   choria-provisioner:
   - apiVersion: v1
     appVersion: 0.7.0
