@@ -1,0 +1,91 @@
+# namespace to create resources in
+namespace: choria-iot
+
+# details about where to get the image and secret to use for it
+image:
+  registry: docker.io
+  repository: choria/provisioner
+  tag: 0.7.0
+  pullPolicy: Always
+  pullSecret: ""
+
+securityContext:
+  enabled: true
+  fsGroup: 65534
+  runAsUser: 65534
+
+# additional annotations to apply to pods
+podAnnotations: {}
+
+# additional labels to apply to pods
+podLabels: {}
+
+# cert-manager integration
+ca:
+  # set to true to create a issuer based on the CA in issuerSecret if the pki feature is enabled
+  createIssuer: true
+
+  # secret where tls.crt and tls.key can be found
+  issuerSecret: ""
+
+# enables the PKI integration feature which can enroll nodes into a cert-manager managed CA
+pki:
+  enabled: true
+
+# configures the connection to the Choria Broker
+broker:
+  # enables running an embedded broker so no additional software is needed
+  embedded: true
+  # creates a Service resource to expose the port to the cluster using a ClusterPort
+  createService: true
+  # the port to expose the broker on in the Service
+  port: 4223
+  # url to find the Choria Broker on, localhost when embedded else a url to a remove broker
+  url: nats://localhost:4222
+  # if the remote broker requires TLS this secret should hold cert.pem, key.pem and ca.pem
+  connectionSecret: ""
+
+# validates incoming nodes using their JWT
+jwt:
+  # enable JWT validation
+  enabled: true
+  # when enabled this secret should hold in signer.pem the public cert of the signer
+  # of JWT tokens, only nodes that validate against this certificate can be provisioned
+  signerSecret: ""
+
+# configures authentication for the embedded Choria Broker
+auth:
+  # password for the "provisioner" user
+  provisioner: ""
+  # password for the "choria" user
+  choria: ""
+
+# configures exposing of prometheus data on /metrics
+prometheus:
+  # enables exporting, sets annotations for prometheus discovery
+  enabled: true
+  # port to listen on for metrics
+  port: 8080
+
+# configures the helper used to provision nodes
+helper:
+  # a configMap holding the helper in provision-helper
+  configMap: ""
+
+# configures the provisioner
+provisioner:
+  # how many concurrent provisions can be performed
+  workers: 4
+
+  # how frequently to discover provisionable machines
+  interval: 5m
+
+  # the log level to log at
+  loglevel: info
+
+  # the token used to acces the provisioning agent
+  token: ""
+
+  # when true does not use choria security protocol to communicate with
+  # unprovisioned nodes
+  insecure: true

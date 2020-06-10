@@ -1,0 +1,33 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: choria:provisioner:csr-manager
+rules:
+- apiGroups: ["cert-manager.io"]
+  resources: ["certificaterequests", "certificaterequests/status", "certificaterequest"]
+  verbs: ["get", "create", "delete"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: choria:provisioner:csr-manager
+  namespace: {{ .Values.namespace }}
+subjects:
+- kind: ServiceAccount
+  name: {{ template "provisioner.fullname" . }}
+  apiGroup: ""
+roleRef:
+  kind: Role
+  name: choria:provisioner:csr-manager
+  apiGroup: rbac.authorization.k8s.io
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ template "provisioner.fullname" . }}
+  namespace: {{ .Values.namespace }}
+
