@@ -1,0 +1,111 @@
+# namespace to create resources in
+namespace: choria
+
+# details about where to get the image and secret to use for it
+image:
+  registry: docker.io
+  repository: choria/aaasvc
+  tag: 0.3.3
+  pullPolicy: Always
+  pullSecret: ""
+
+# run the containers with a specific security context
+securityContext:
+  enabled: true
+  fsGroup: 2048
+  runAsUser: 2048
+
+# additional annotations to apply to pods
+podAnnotations: {}
+
+# additional labels to apply to pods
+podLabels: {}
+
+# how many instances of the service to run
+replicas: 2
+
+# configures exposing of prometheus data on /metrics
+prometheus:
+  # enables exporting, sets annotations for prometheus discovery
+  enabled: true
+  # port to listen on for metrics
+  port: 8081
+
+# configure signers
+signer:
+  # when signing is enabled this secret holds the privileged key, certificate and CA
+  # used to sign requests on behalf of users
+  choriaPrivilegedSecretName: "aaasvc-request-signer"
+  tokenValidationSecretName: "aaasvc-signer-cert"
+
+  basicjwt:
+    maxValidity: 2h
+
+# configures auditors
+auditor:
+  # logs audit events to a file
+  logfile:
+    file: /dev/stdout
+
+  # publish audit events to NATS Streaming Server
+  natsstream:
+    clusterID: ""
+    servers: ""
+    topic: "choria.audit"
+
+  # publish audit events to NATS JetStream
+  jetstream:
+    servers: ""
+    topic: "choria.audit"
+
+# authenticator configuration
+authenticator:
+  # secret holding private data for signing JWT tokens
+  tokenSignerSecret: "aaasvc-signer-key"
+
+  # how long authentication tokens should be valid for
+  validity: 2h
+
+  userlist:
+    # secret to load the static user configuration from
+    usersSecret: "aaasvc-users"
+
+  okta:
+    # okta client id
+    clientID: ""
+    # okta client secret
+    clientSecret: ""
+    # okta api token
+    apiToken: ""
+    # end point to your instance of the Okta API
+    endpoint: "https://xxx.oktapreview.com"
+    # specific ACLs for user groups defined in Okta
+    acls: {}
+
+aaasvc:
+  # level to log at debug, info, warn, error
+  loglevel: info
+
+  # the authenticator to use, leave empty to disable authentication
+  authenticator: userlist
+
+  # auditors to send audit events to, leave empty to disable auditing
+  auditors:
+    - logfile
+
+  # the authorizer to user, leave empty to disable authorization
+  authorizer: opa
+
+  # the signer to use to sign incoming requests, leave empty to disable signing
+  signer: basicjwt
+
+  # creates a service to expose the service
+  createService: true
+
+  # ingress properties
+  createIngress: true
+  ingressHostname: ""
+  ingressClass: nginx
+  certManagerIssuer: "choria-ca"
+  ingressAnnotations: {}
+

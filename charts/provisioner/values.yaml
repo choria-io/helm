@@ -9,6 +9,7 @@ image:
   pullPolicy: Always
   pullSecret: ""
 
+# run the containers with a specific security context
 securityContext:
   enabled: true
   fsGroup: 2048

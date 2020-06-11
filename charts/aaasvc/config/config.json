@@ -1,0 +1,56 @@
+{
+  "choria_config": "/aaasvc/config/choria.conf",
+  "loglevel": "{{ .Values.aaasvc.loglevel }}",
+  "authenticator": "{{ .Values.aaasvc.authenticator }}",
+  "auditors": {{ .Values.aaasvc.auditors | toJson }},
+  "authorizer": "{{ .Values.aaasvc.authorizer }}",
+  "signer": "{{ .Values.aaasvc.signer }}",
+  "port": 8080,
+  "site": "{{ .Release.Namespace }}-{{ .Release.Name }}",
+{{- if .Values.prometheus.enabled }}
+  "monitor_port": {{ .Values.prometheus.port }},
+{{- end }}
+{{- if eq .Values.aaasvc.signer "basicjwt" }}
+  "basicjwt_signer": {
+    "signing_certificate": "/aaasvc/signer/validation/cert.pem",
+    "max_validity": "{{ default .Values.signer.basicjwt.maxValidaity "2h" }}"
+  },
+{{- end }}
+{{- if has "logfile" .Values.aaasvc.auditors }}
+  "logfile_auditor": {
+    "logfile": "{{ default .Values.auditor.logfile.file "/dev/stdout"}}"
+  },
+{{- end }}
+{{- if has "natsstream" .Values.aaasvc.auditors }}
+  "natsstream_auditor": {
+    "cluster_id": "{{ required .Values.auditor.natsstream.clusterID }}",
+    "servers": "{{ required .Values.auditor.natsstream.servers }}",
+    "topic": "{{ required .Values.auditor.natsstream.topic }}"
+  },
+{{- end }}
+{{- if has "jetstream" .Values.aaasvc.auditors }}
+  "logfile_jetstream": {
+    "servers": "{{ required .Values.auditor.jetstream.servers }}",
+    "topic": "{{ required .Values.auditor.jetstream.topic }}"
+  },
+{{- end }}
+{{- if eq .Values.aaasvc.authenticator "userlist" }}
+  "userlist_authenticator": {
+    "signing_key": "/aaasvc/authenticator/signing/key.pem",
+    "users_file": "/aaasvc/authenticator/users/users.json",
+    "validity": "{{ .Values.authenticator.validity }}"
+  },
+{{- end }}
+{{- if eq .Values.aaasvc.authenticator "okta" }}
+  "okta_authenticator": {
+    "signing_key": "/aaasvc/authenticator/signing/key.pem",
+    "client_id": "{{ .Values.authenticator.okta.clientID }}",
+    "client_secret": "{{ .Values.authenticator.okta.clientSecret }}",
+    "api_token": "{{ .Values.authenticator.okta.apiToken }}",
+    "endpoint": "{{ .Values.authenticator.okta.endpoint }}",
+    "validity": "1h",
+    "acls": {{ .Values.authenticator.okta.acls | toJson }}
+  },
+{{- end }}
+  "logfile": "/dev/stdout"
+}

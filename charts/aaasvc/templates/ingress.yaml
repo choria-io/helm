@@ -1,0 +1,30 @@
+{{- if .Values.aaasvc.createIngress }}
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: {{ template "aaasvc.fullname" . }}
+  annotations:
+    kubernetes.io/ingress.class: "{{ .Values.aaasvc.ingressClass }}"
+    {{- if ne .Values.aaasvc.certManagerIssuer "" }}
+    cert-manager.io/cluster-issuer: "{{ .Values.aaasvc.certManagerIssuer }}"
+    {{- end }}
+    {{- if eq .Values.aaasvc.ingressClass "nginx "}}
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+  {{- end }}
+
+spec:
+  {{- if ne .Values.aaasvc.certManagerIssuer "" }}
+  tls:
+    - secretName: {{ template "aaasvc.fullname" . }}-ingress
+      hosts:
+        - {{ required "ingressHostname is required" .Values.aaasvc.ingressHostname }}
+  {{- end }}
+  rules:
+    - host: {{ required "ingressHostname is required" .Values.aaasvc.ingressHostname }}
+      http:
+        paths:
+          - backend:
+              serviceName: {{ template "aaasvc.fullname" . }}
+              servicePort: 80
+{{- end }}

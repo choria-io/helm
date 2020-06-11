@@ -47,5 +47,6 @@ The [ca](https://github.com/choria-io/helm/tree/master/charts/ca) chart can crea
 |[broker](https://github.com/choria-io/helm/tree/master/charts/broker)|Installs and configure [Choria Broker](https://github.com/choria-io/go-choria)|
 |[ca](https://github.com/choria-io/helm/tree/master/charts/ca)|Creates a self hosted CA integrated with [Cert Manager](https://cert-manager.io)|
 |[provisioner](https://github.com/choria-io/helm/tree/master/charts/provisioner)|Installs and configure [Choria Provisioner](https://github.com/choria-io/provisioning-agent)|
+|[aaasvc](https://github.com/choria-io/helm/tree/master/charts/aaasvc)|Installs and configures [Choria AAA Service](https://github.com/choria-io/aaasvc)|
 |[tally](https://github.com/choria-io/helm/tree/master/charts/tally)|Installs and configure Network Tally|
 
