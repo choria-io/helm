@@ -24,6 +24,27 @@ entries:
     urls:
     - https://github.com/choria-io/helm/releases/download/aaasvc-0.0.1/aaasvc-0.0.1.tgz
     version: 0.0.1
+  broker:
+  - apiVersion: v1
+    appVersion: 0.14.0
+    created: "2020-06-13T13:54:05.519484268Z"
+    description: Choria Network Broker
+    digest: 73a7a22cc739433833106cf7f9c8b4224a6dcf7d686041eb3d8277f9c9192de1
+    home: https://choria.io/
+    icon: https://choria.io/img/choria.png
+    keywords:
+    - choria
+    - middleware
+    maintainers:
+    - email: rip@devco.net
+      name: R.I.Pienaar
+      url: https://choria.io
+    name: broker
+    sources:
+    - https://github.com/choria-io/go-choria/
+    urls:
+    - https://github.com/choria-io/helm/releases/download/broker-0.0.1/broker-0.0.1.tgz
+    version: 0.0.1
   choria-provisioner:
   - apiVersion: v1
     appVersion: 0.7.0
