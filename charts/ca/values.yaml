@@ -1,0 +1,10 @@
+# namespace to create resources in
+namespace: choria
+
+# cert-manager integration
+ca:
+  # secret where tls.crt and tls.key can be found
+  issuerSecret: "choria-ca"
+
+  # the name of the issuer to create
+  issuerName: "choria-ca"

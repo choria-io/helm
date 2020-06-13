@@ -1,0 +1,9 @@
+
+Choria CA
+=========
+
+           Issuer Name: {{ .Values.ca.issuerName }}
+                  Role: choria:csraccess
+           RoleBinding: choria:csracess
+	ServiceAccount: {{ .Values.ca.issuerName }}
+

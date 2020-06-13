@@ -1,0 +1,9 @@
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Issuer
+metadata:
+  name: {{ .Values.ca.issuerName }}
+  namespace: {{ .Values.namespace }}
+spec:
+  ca:
+    secretName: {{ required "ca.issuerSecret is required" .Values.ca.issuerSecret }}

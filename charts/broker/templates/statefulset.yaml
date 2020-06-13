@@ -46,8 +46,8 @@ spec:
     {{- end }}
 
     spec:
-      serviceAccount: {{ template "broker.fullname" . }}
-      serviceAccountName: {{ template "broker.fullname" . }}
+      serviceAccount: choria:csracess
+      serviceAccountName: choria:csracess
       {{- if .Values.image.pullSecret }}
       imagePullSecrets:
         - name: {{ .Values.image.pullSecret }}

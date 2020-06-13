@@ -16,10 +16,7 @@ $ helm repo update
 ## Required Certificate Authority
 
 Where possible the charts will auto enroll their components in a [Cert Manager](https://cert-manager.io/)
-manager Certificate Authority. This is not set up by these charts.
-
-One the initial configuration is completed and Cert Manager is running in your cluster
-follow the [CA](https://cert-manager.io/docs/configuration/ca/) guide to configure a self signed CA.
+manager Certificate Authority.
 
 **WARNING:** Do not use Letsencrypt certificates unless you know what you are doing.
 
@@ -28,9 +25,14 @@ are safe to auto enroll, you should have the ability to issue certificates from 
 for clients and privileged certificates should you need that. See specific Chart readme files
 for details.
 
+The charts that do integrate with the CA all default to `choria-ca` as Issuer name.
+
+The `ca` chart can create the Issuer, Role, RoleBindings and ServiceAccount needed.
+
 ## Charts
 
 |Chart|Description|
 |-----|-----------|
-|[broker](https://github.com/choria-io/helm/tree/master/charts/provisioner)|Installs and configure [Choria Broker](https://github.com/choria-io/go-choria)|
+|[broker](https://github.com/choria-io/helm/tree/master/charts/broker)|Installs and configure [Choria Broker](https://github.com/choria-io/go-choria)|
+|[ca](https://github.com/choria-io/helm/tree/master/charts/ca)|Creates a self hosted CA integrated with [Cert Manager](https://cert-manager.io)|
 |[provisioner](https://github.com/choria-io/helm/tree/master/charts/provisioner)|Installs and configure [Choria Provisioner](https://github.com/choria-io/provisioning-agent)|
