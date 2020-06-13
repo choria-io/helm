@@ -1,0 +1,17 @@
+apiVersion: v1
+name: broker
+version: 0.0.1
+appVersion: 0.14.0
+description: Choria Network Broker
+keywords:
+  - choria
+  - middleware
+home: https://choria.io/
+sources:
+  - https://github.com/choria-io/go-choria/
+maintainers:
+  - name: R.I.Pienaar
+    email: rip@devco.net
+    url: https://choria.io
+icon: https://choria.io/img/choria.png
+
