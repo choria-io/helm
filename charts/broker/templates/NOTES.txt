@@ -1,0 +1,10 @@
+Choria Broker
+=============
+
+               Image: {{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}
+	Cluster Size: {{ .Values.broker.clusterSize }}
+{{- if and .Values.broker.publicName .Values.broker.servicePort }}
+	 Public Name: {{ .Values.broker.publicName }}:{{ .Values.broker.servicePort }}
+{{- end }}
+
+For more information please visit https://choria.io

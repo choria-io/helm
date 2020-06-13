@@ -1,0 +1,16 @@
+{{- if .Values.broker.createService }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "broker.fullname" . }}
+  namespace: {{ .Values.namespace }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.broker.servicePort }}
+      targetPort: 4222
+      protocol: TCP
+  selector:
+    app: broker
+{{- end }}

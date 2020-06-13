@@ -87,5 +87,5 @@ provisioner:
   token: ""
 
   # when true does not use choria security protocol to communicate with
-  # unprovisioned nodes
+  # unprovisioned nodes, does not use TLS to communicate with the broker
   insecure: true

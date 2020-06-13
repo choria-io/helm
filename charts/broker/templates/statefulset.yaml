@@ -1,0 +1,78 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "broker.fullname" . }}-ss
+  labels:
+    app: broker
+spec:
+  ports:
+    - port: 4222
+      name: clients
+    - port: 6222
+      name: cluster
+  clusterIP: None
+  selector:
+    app: broker
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ template "broker.fullname" . }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.broker.clusterSize }}
+  serviceName: {{ template "broker.fullname" . }}-ss
+  selector:
+    matchLabels:
+      app: broker
+  template:
+    metadata:
+      annotations:
+        {{- if .Values.prometheus.enabled }}
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "{{ .Values.prometheus.port }}"
+        prometheus.io/metric_path: "/choria/prometheus"
+        {{- end }}
+        {{- if .Values.podAnnotations }}
+        {{ toYaml .Values.podAnnotations | indent 8 }}
+      {{- end }}
+
+      labels:
+        app: broker
+      {{- if .Values.podLabels }}
+      {{ toYaml .Values.podLabels | indent 8 }}
+    {{- end }}
+
+    spec:
+      serviceAccount: {{ template "broker.fullname" . }}
+      serviceAccountName: {{ template "broker.fullname" . }}
+      {{- if .Values.image.pullSecret }}
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecret }}
+      {{- end }}
+      {{- if .Values.securityContext.enabled }}
+      securityContext:
+        runAsUser: {{ .Values.securityContext.runAsUser }}
+        fsGroup: {{ .Values.securityContext.fsGroup }}
+      {{- end }}
+
+      containers:
+        - name: broker
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          command: ["/bin/choria", "broker", "--config=/etc/choria/config/broker.conf"]
+          ports:
+            {{- if .Values.prometheus.enabled }}
+            - containerPort: {{ .Values.prometheus.port }}
+            {{- end }}
+            - containerPort: 4222
+          volumeMounts:
+            - name: config
+              mountPath: "/etc/choria/config"
+              readOnly: true
+
+      volumes:
+        - name: config
+          configMap:
+            name: {{ template "broker.fullname" . }}
