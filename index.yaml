@@ -27,6 +27,26 @@ entries:
   broker:
   - apiVersion: v1
     appVersion: 0.14.0
+    created: "2020-06-13T16:50:01.056225626Z"
+    description: Choria Network Broker
+    digest: 757de2c905be8b5d03ba6acc91d3505a758aeeef2257836894b3a9bc741864d1
+    home: https://choria.io/
+    icon: https://choria.io/img/choria.png
+    keywords:
+    - choria
+    - middleware
+    maintainers:
+    - email: rip@devco.net
+      name: R.I.Pienaar
+      url: https://choria.io
+    name: broker
+    sources:
+    - https://github.com/choria-io/go-choria/
+    urls:
+    - https://github.com/choria-io/helm/releases/download/broker-0.0.2/broker-0.0.2.tgz
+    version: 0.0.2
+  - apiVersion: v1
+    appVersion: 0.14.0
     created: "2020-06-13T13:54:05.519484268Z"
     description: Choria Network Broker
     digest: 73a7a22cc739433833106cf7f9c8b4224a6dcf7d686041eb3d8277f9c9192de1
@@ -44,6 +64,26 @@ entries:
     - https://github.com/choria-io/go-choria/
     urls:
     - https://github.com/choria-io/helm/releases/download/broker-0.0.1/broker-0.0.1.tgz
+    version: 0.0.1
+  ca:
+  - apiVersion: v1
+    appVersion: 0.0.1
+    created: "2020-06-13T16:50:01.185751534Z"
+    description: Configures Choria CA integration for Cert Manager
+    digest: 418a47968ae55207e698bc9a3a0a49d12d8a2dc6ced91a7d4dfb27ed55c22db6
+    home: https://choria.io/
+    icon: https://choria.io/img/choria.png
+    keywords:
+    - choria
+    maintainers:
+    - email: rip@devco.net
+      name: R.I.Pienaar
+      url: https://choria.io
+    name: ca
+    sources:
+    - https://github.com/choria-io/helm
+    urls:
+    - https://github.com/choria-io/helm/releases/download/ca-0.0.1/ca-0.0.1.tgz
     version: 0.0.1
   choria-provisioner:
   - apiVersion: v1
