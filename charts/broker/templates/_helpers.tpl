@@ -8,9 +8,9 @@
 {{- $name := include "broker.fullname" . -}}
 {{- range $i, $e := until $count -}}
 {{- if eq $last $i -}}
-{{ printf "nats://%s-%d.%s-ss.%s.svc:5222" $name $i $name  $.Values.namespace }}
+{{ printf "nats://%s-%d.%s-ss.%s.svc.cluster.local:5222" $name $i $name  $.Values.namespace }}
 {{- else -}}
-{{ printf "nats://%s-%d.%s-ss.%s.svc:5222," $name  $i $name $.Values.namespace }}
+{{ printf "nats://%s-%d.%s-ss.%s.svc.cluster.local:5222," $name  $i $name $.Values.namespace }}
 {{- end -}}
 {{- end -}}
 {{- end }}

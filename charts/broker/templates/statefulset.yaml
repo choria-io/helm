@@ -3,6 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ template "broker.fullname" . }}-ss
+  namespace: {{ .Values.namespace }}
   labels:
     app: broker
 spec:
@@ -46,8 +47,8 @@ spec:
     {{- end }}
 
     spec:
-      serviceAccount: choria:csracess
-      serviceAccountName: choria:csracess
+      serviceAccount: choria-csraccess
+      serviceAccountName: choria-csraccess
       {{- if .Values.image.pullSecret }}
       imagePullSecrets:
         - name: {{ .Values.image.pullSecret }}

@@ -17,7 +17,7 @@ metadata:
   namespace: {{ .Values.namespace }}
 subjects:
   - kind: ServiceAccount
-    name: {{ .Values.ca.issuerName }}
+    name: choria-csraccess
     apiGroup: ""
 roleRef:
   kind: Role
@@ -28,6 +28,6 @@ roleRef:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ .Values.ca.issuerName }}
+  name: choria-csraccess
   namespace: {{ .Values.namespace }}
 

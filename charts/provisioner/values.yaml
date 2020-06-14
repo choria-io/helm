@@ -1,18 +1,18 @@
 # namespace to create resources in
-namespace: choria-iot
+namespace: choria
 
 # details about where to get the image and secret to use for it
 image:
   registry: docker.io
   repository: choria/provisioner
-  tag: 0.7.0
+  tag: 0.7.1
   pullPolicy: Always
   pullSecret: ""
 
 securityContext:
   enabled: true
-  fsGroup: 65534
-  runAsUser: 65534
+  fsGroup: 2048
+  runAsUser: 2048
 
 # additional annotations to apply to pods
 podAnnotations: {}
@@ -20,17 +20,12 @@ podAnnotations: {}
 # additional labels to apply to pods
 podLabels: {}
 
-# cert-manager integration
-ca:
-  # set to true to create a issuer based on the CA in issuerSecret if the pki feature is enabled
-  createIssuer: true
-
-  # secret where tls.crt and tls.key can be found
-  issuerSecret: ""
-
 # enables the PKI integration feature which can enroll nodes into a cert-manager managed CA
 pki:
   enabled: true
+
+  # the service account used to access the Cert Manager Issuer
+  serviceAccount: choria-csraccess
 
 # configures the connection to the Choria Broker
 broker:
@@ -51,7 +46,7 @@ jwt:
   enabled: true
   # when enabled this secret should hold in signer.pem the public cert of the signer
   # of JWT tokens, only nodes that validate against this certificate can be provisioned
-  signerSecret: ""
+  signerSecret: jwt-signer-cert
 
 # configures authentication for the embedded Choria Broker
 auth:
@@ -70,7 +65,7 @@ prometheus:
 # configures the helper used to provision nodes
 helper:
   # a configMap holding the helper in provision-helper
-  configMap: ""
+  configMap: "provisioner-helper"
 
 # configures the provisioner
 provisioner:
@@ -89,3 +84,5 @@ provisioner:
   # when true does not use choria security protocol to communicate with
   # unprovisioned nodes, does not use TLS to communicate with the broker
   insecure: true
+
+  certManagerIssuer: "choria-ca"
