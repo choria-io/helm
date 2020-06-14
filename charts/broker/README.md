@@ -18,4 +18,4 @@ and add the Choria Helm Repository.
 |`broker.servicePort`|The port to expose when `broker.createService` is enabled|`4222`|
 |`broker.clusterSize`|The number of pods to start in a cluster|`1`| 
 
-See `helm show values choria/provisioner` for full list of available values.
+See `helm show values choria/broker` for full list of available values.

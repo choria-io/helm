@@ -13,7 +13,18 @@ $ helm repo add choria https://choria-io.github.io/helm
 $ helm repo update
 ```
 
-## Required Certificate Authority
+### Required Namespace
+
+It's best to install the Choria components in their own Namespace but Helm cannot create this for you.
+
+By default these Charts assume Namespace `choria`:
+
+```nohighlight
+$ kubectl create namespace choria
+namespace/choria created
+```
+
+### Required Certificate Authority
 
 Where possible the charts will auto enroll their components in a [Cert Manager](https://cert-manager.io/)
 manager Certificate Authority.
@@ -27,7 +38,7 @@ for details.
 
 The charts that do integrate with the CA all default to `choria-ca` as Issuer name.
 
-The `ca` chart can create the Issuer, Role, RoleBindings and ServiceAccount needed.
+The [ca](https://github.com/choria-io/helm/tree/master/charts/ca) chart can create the Issuer, Role, RoleBindings and ServiceAccount needed.
 
 ## Charts
 

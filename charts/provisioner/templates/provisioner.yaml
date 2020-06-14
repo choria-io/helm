@@ -57,8 +57,8 @@ spec:
 {{ toYaml .Values.podLabels | indent 8 }}
       {{- end }}
     spec:
-      serviceAccount: {{ template "provisioner.fullname" . }}
-      serviceAccountName: {{ template "provisioner.fullname" . }}
+      serviceAccount: {{ .Values.pki.serviceAccount }}
+      serviceAccountName: {{ .Values.pki.serviceAccount }}
     {{- if .Values.image.pullSecret }}
       imagePullSecrets:
       - name: {{ .Values.image.pullSecret }}
@@ -70,7 +70,7 @@ spec:
     {{- end }}
       containers:
       - name: provisioner
-        image: {{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}
+        image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         command: ["/usr/sbin/choria-provisioner"]
         args: ["--config", "/etc/choria-provisioner/config/choria-provisioner.yaml", "--choria-config", "/etc/choria-provisioner/config/client.cfg"]

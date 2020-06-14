@@ -1,0 +1,241 @@
+#!/usr/bin/ruby
+
+require "json"
+require "yaml"
+require "base64"
+require "net/http"
+require "openssl"
+
+BROKERS = "nats://choria.example.net:4222"
+REGISTRATION_DATA = "/etc/choria/facts.json"
+NAMESPACE = "choria"
+ISSUER = "choria-ca"
+
+
+def empty_reply
+  {
+    "defer" => false,
+    "msg" => "",
+    "certificate" => "",
+    "ca" => "",
+    "configuration" => {}
+  }
+end
+
+def pki?(request)
+  request["csr"] && request["csr"]["csr"]
+end
+
+def parse_input
+  input = STDIN.read
+  File.open("/tmp/input", "w") {|f| f.puts input}
+  request = JSON.parse(input)
+  request["inventory"] = JSON.parse(request["inventory"])
+
+  request
+end
+
+def k8s_ca_cert
+  File.join(k8s_service_account, "ca.crt")
+end
+
+def k8s_token
+  File.read(File.join(k8s_service_account, "token"))
+end
+
+def k8s_namespace
+  File.read(File.join(k8s_service_account, "namespace"))
+end
+
+def k8s_service_account
+  "/var/run/secrets/kubernetes.io/serviceaccount"
+end
+
+def k8s_api_server
+  "https://kubernetes.default.svc"
+end
+
+def k8s_http(uri)
+  http = Net::HTTP.new(uri.host, uri.port)
+  http.use_ssl = true
+  http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+  http.ca_file = k8s_ca_cert
+
+  http
+end
+
+def k8s_header
+  {
+    "Authorization" => "Bearer %s" % k8s_token,
+    "Content-Type" => "application/json",
+    "Accept" => "application/json"
+  }
+end
+
+def k8s_get_request(path)
+  uri = URI.parse("%s/%s" % [k8s_api_server, path])
+  request = Net::HTTP::Get.new(uri.path, k8s_header)
+
+  k8s_http(uri).request(request)
+end
+
+def k8s_delete_request(path)
+  uri = URI.parse("%s/%s" % [k8s_api_server, path])
+  request = Net::HTTP::Delete.new(uri.path, k8s_header)
+
+  k8s_http(uri).request(request)
+end
+
+def k8s_create_request(path, data)
+  uri = URI.parse("%s/%s" % [k8s_api_server, path])
+  request = Net::HTTP::Post.new(uri.path, k8s_header)
+  request.body = data
+
+  k8s_http(uri).request(request)
+end
+
+def cm_csr_request(identity, csr)
+  {
+    "apiVersion" => "cert-manager.io/v1alpha3",
+    "kind" => "CertificateRequest",
+    "metadata" => {
+      "name" => identity,
+      "namesapce" => NAMESPACE
+    },
+    "spec" => {
+      "issuerRef" => {
+        "name" => ISSUER,
+      },
+      "csr" => Base64.encode64(csr)
+    }
+  }.to_json
+end
+
+def k8s_request_csr(identity, csr)
+  k8s_create_request("apis/cert-manager.io/v1alpha3/namespaces/%s/certificaterequests" % NAMESPACE, cm_csr_request(identity, csr))
+end
+
+def k8s_delete_csr(identity)
+  k8s_delete_request("apis/cert-manager.io/v1alpha3/namespaces/%s/certificaterequests/%s" % [NAMESPACE, identity])
+end
+
+def k8s_get_csr(identity)
+  k8s_get_request("apis/cert-manager.io/v1alpha3/namespaces/%s/certificaterequests/%s" % [NAMESPACE, identity])
+end
+
+def process_csr!(request, reply)
+  return unless pki?(request)
+
+  ident = request["identity"]
+  csr = request["csr"]["csr"]
+
+  result = k8s_request_csr(ident, csr)
+  if result.code == "409"
+    result = k8s_delete_csr(ident)
+    if result.code != "200"
+      reply["msg"] = "Got %s from the kubernetes API while deleting existing CSR" % result.code
+      reply["defer"] = true
+
+      return false
+    end
+
+    result = k8s_request_csr(ident, csr)
+  end
+
+  if result.code != "201"
+    reply["msg"] = "Got %s from the kubernetes API while creating new CSR" % result.code
+    reply["defer"] = true
+
+    return false
+  end
+
+  tries = 0
+  loop do
+    tries += 1
+
+    if tries > 5
+      reply["msg"] = "Did not receive a signed certificate from the CA"
+      reply["defer"] = true
+      return false
+    end
+
+    result = k8s_get_csr(ident)
+
+    if result.code != "200"
+      sleep(1)
+      next
+    end
+
+    csrr = JSON.parse(result.body)
+    if csrr["status"]["ca"]
+      reply["ca"] = Base64.decode64(csrr["status"]["ca"])
+      reply["certificate"] = Base64.decode64(csrr["status"]["certificate"])
+
+      ssldir = request["csr"]["ssldir"]
+      reply["configuration"].merge!(
+        "plugin.security.provider" => "file",
+        "plugin.security.file.certificate" => File.join(ssldir, "certificate.pem"),
+        "plugin.security.file.key" => File.join(ssldir, "private.pem"),
+        "plugin.security.file.ca" => File.join(ssldir, "ca.pem"),
+        "plugin.security.file.cache" => File.join(ssldir, "cache")
+      )
+
+      return true
+    end
+  end
+end
+
+def validate!(request, reply)
+  if request["identity"] && request["identity"].length > 0
+    return true
+  end
+
+  reply["msg"] = "No identity received in request"
+  reply["defer"] = true
+
+  false
+end
+
+def publish_reply(reply)
+  File.open("/tmp/reply", "w") {|f| f.puts reply.to_json}
+
+  puts reply.to_json
+end
+
+def publish_reply!(reply)
+  publish_reply(reply)
+  exit
+end
+
+def set_config!(request, reply)
+  reply["configuration"].merge!(
+    "identity" => request["identity"],
+    "registerinterval" => "300",
+    "plugin.choria.server.provision" => "false",
+    "plugin.choria.middleware_hosts" => BROKERS,
+    "plugin.choria.registration.file_content.data" => REGISTRATION_DATA
+  )
+end
+
+reply = empty_reply
+
+begin
+  request = parse_input
+
+  unless validate!(request, reply)
+    publish_reply!(reply)
+  end
+
+  unless process_csr!(request, reply)
+    publish_reply!(reply)
+  end
+
+  set_config!(request, reply)
+
+  publish_reply!(reply)
+rescue SystemExit
+rescue Exception
+  reply["msg"] = "Unexpected failure during provisioning: %s: %s" % [$!.class, $!.to_s]
+  reply["defer"] = true
+  publish_reply!(reply)
+end

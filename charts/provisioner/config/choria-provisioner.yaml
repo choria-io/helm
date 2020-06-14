@@ -18,7 +18,7 @@ token: {{ .Values.provisioner.token }}
 broker_provisioning_password: {{ .Values.auth.provisioner }}
 {{- end }}
 {{- if .Values.auth.choria }}
-broker_choria_password: 00f7007b070cb69189ef66fbf42059d8
+broker_choria_password: {{ .Values.auth.choria }}
 {{- end }}
 broker_port: 4222
 {{- end }}

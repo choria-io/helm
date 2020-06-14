@@ -34,6 +34,7 @@ And create a Kubernetes Secret:
 
 ```nohighlight
 $ kubectl -n choria create secret generic choria-ca --from-file ca
+secret/choria-ca created
 ```
 
 At this point we can install the CA Issuer, Role, RoleBinding and ServiceAccount.

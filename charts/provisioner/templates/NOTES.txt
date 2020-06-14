@@ -8,6 +8,7 @@ Active Configuration:
              Workers: {{ .Values.provisioner.workers }}
             Interval: {{ .Values.provisioner.interval }}
     Helper ConfigMap: {{ .Values.helper.configMap }}
+        Cert Manager: {{ .Values.provisioner.certManagerIssuer }}
 
   Features:
 
@@ -28,12 +29,5 @@ Active Configuration:
     {{- end }}
     {{- if .Values.broker.connectionSecret }}
           Connection TLS: {{ .Values.broker.connectionSecret }}
-    {{- end }}
-
-  CA:
-
-    Issuer Created: {{ .Values.ca.createIssuer }}
-    {{- if .Values.ca.issuerSecret }}
-    Issuer Secrets: {{ .Values.ca.issuerSecret }}
     {{- end }}
 
