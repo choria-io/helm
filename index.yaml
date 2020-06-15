@@ -27,6 +27,26 @@ entries:
   broker:
   - apiVersion: v1
     appVersion: 0.14.0
+    created: "2020-06-15T13:43:52.338386365Z"
+    description: Choria Network Broker
+    digest: 44adf8bb5d1ecfbd199912bb5fa736d11c31ca09db61a8ac0c51aa35da44d842
+    home: https://choria.io/
+    icon: https://choria.io/img/choria.png
+    keywords:
+    - choria
+    - middleware
+    maintainers:
+    - email: rip@devco.net
+      name: R.I.Pienaar
+      url: https://choria.io
+    name: broker
+    sources:
+    - https://github.com/choria-io/go-choria/
+    urls:
+    - https://github.com/choria-io/helm/releases/download/broker-0.0.4/broker-0.0.4.tgz
+    version: 0.0.4
+  - apiVersion: v1
+    appVersion: 0.14.0
     created: "2020-06-14T18:59:36.592458918Z"
     description: Choria Network Broker
     digest: 4902227554b596adc38b354a15707cdaa0165b77a7f1c8d4f68820edab875e58
@@ -148,6 +168,27 @@ entries:
   provisioner:
   - apiVersion: v1
     appVersion: 0.7.1
+    created: "2020-06-15T13:43:52.466805752Z"
+    description: Choria Server Provisioner
+    digest: c43d5ecd21a15bcb9be4446404c5d30c89ce92c35e0e923f2dd6c4455b66215f
+    home: https://choria.io/
+    icon: https://choria.io/img/choria.png
+    keywords:
+    - choria
+    - iot
+    - provisioning
+    maintainers:
+    - email: rip@devco.net
+      name: R.I.Pienaar
+      url: https://choria.io
+    name: provisioner
+    sources:
+    - https://github.com/choria-io/provisioning-agent/
+    urls:
+    - https://github.com/choria-io/helm/releases/download/provisioner-0.0.6/provisioner-0.0.6.tgz
+    version: 0.0.6
+  - apiVersion: v1
+    appVersion: 0.7.1
     created: "2020-06-14T18:59:36.803680043Z"
     description: Choria Server Provisioner
     digest: 9487603f031e23993e96e481fec5883e71d5a273f1614732e6d15746768eac53
@@ -188,4 +229,25 @@ entries:
     urls:
     - https://github.com/choria-io/helm/releases/download/provisioner-0.0.2/provisioner-0.0.2.tgz
     version: 0.0.2
+  tally:
+  - apiVersion: v1
+    appVersion: 0.0.2
+    created: "2020-06-15T13:43:52.589663331Z"
+    description: Choria Network Tally
+    digest: 63a76136f380afc9b51878906da8c5af21679c29ec8d661514a711e8cfaf4f13
+    home: https://choria.io/
+    icon: https://choria.io/img/choria.png
+    keywords:
+    - choria
+    - middleware
+    maintainers:
+    - email: rip@devco.net
+      name: R.I.Pienaar
+      url: https://choria.io
+    name: tally
+    sources:
+    - https://github.com/choria-io/tally/
+    urls:
+    - https://github.com/choria-io/helm/releases/download/tally-0.0.1/tally-0.0.1.tgz
+    version: 0.0.1
 generated: "2020-06-10T07:58:57.306946896Z"
