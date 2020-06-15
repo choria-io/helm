@@ -1,0 +1,63 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "tally.fullname" . }}-config
+  namespace: {{ .Values.namespace }}
+data:
+  tally.conf: |-
+{{ (tpl (.Files.Get "config/tally.conf") . ) | indent 5 }}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "tally.fullname" . }}
+  namespace:  {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tally
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "{{ .Values.tally.port }}"
+      {{- if .Values.podAnnotations }}
+{{ toYaml .Values.podAnnotations | indent 8 }}
+      {{- end }}
+      labels:
+        app: tally
+      {{- if .Values.podLabels }}
+{{ toYaml .Values.podLabels | indent 8 }}
+    {{- end }}
+    spec:
+      serviceAccount: {{ .Values.tally.serviceAccount }}
+      serviceAccountName: {{ .Values.tally.serviceAccount }}
+      {{- if .Values.image.pullSecret }}
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecret }}
+      {{- end }}
+      {{- if .Values.securityContext.enabled }}
+      securityContext:
+        runAsUser: {{ .Values.securityContext.runAsUser }}
+        fsGroup: {{ .Values.securityContext.fsGroup }}
+      {{- end }}
+      containers:
+        - name: tally
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/tally/tally"]
+          args: ["--config", "/tally/config/tally.conf", "--port", "{{ .Values.tally.port }}"]
+          volumeMounts:
+            - name: config
+              mountPath: /tally/config
+              readOnly: true
+
+      volumes:
+        - name: config
+          configMap:
+            name: {{ template "tally.fullname" . }}-config

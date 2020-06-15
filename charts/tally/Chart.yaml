@@ -1,14 +1,14 @@
 apiVersion: v1
-name: broker
-version: 0.0.4
-appVersion: 0.14.0
-description: Choria Network Broker
+name: tally
+version: 0.0.1
+appVersion: 0.0.2
+description: Choria Network Tally
 keywords:
   - choria
   - middleware
 home: https://choria.io/
 sources:
-  - https://github.com/choria-io/go-choria/
+  - https://github.com/choria-io/tally/
 maintainers:
   - name: R.I.Pienaar
     email: rip@devco.net
