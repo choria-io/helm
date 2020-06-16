@@ -168,6 +168,27 @@ entries:
   provisioner:
   - apiVersion: v1
     appVersion: 0.7.1
+    created: "2020-06-16T18:40:09.686524959Z"
+    description: Choria Server Provisioner
+    digest: a7180d352ace013e21b4e761159e30ce8b4c057d3672aa7d778f9480d25f313b
+    home: https://choria.io/
+    icon: https://choria.io/img/choria.png
+    keywords:
+    - choria
+    - iot
+    - provisioning
+    maintainers:
+    - email: rip@devco.net
+      name: R.I.Pienaar
+      url: https://choria.io
+    name: provisioner
+    sources:
+    - https://github.com/choria-io/provisioning-agent/
+    urls:
+    - https://github.com/choria-io/helm/releases/download/provisioner-0.0.7/provisioner-0.0.7.tgz
+    version: 0.0.7
+  - apiVersion: v1
+    appVersion: 0.7.1
     created: "2020-06-15T13:43:52.466805752Z"
     description: Choria Server Provisioner
     digest: c43d5ecd21a15bcb9be4446404c5d30c89ce92c35e0e923f2dd6c4455b66215f
