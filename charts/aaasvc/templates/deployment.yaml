@@ -1,0 +1,100 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "aaasvc.fullname" . }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: aaasvc
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        {{- if .Values.prometheus.enabled }}
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "{{ .Values.prometheus.port }}"
+        {{- end }}
+        {{- if .Values.podAnnotations }}
+{{ toYaml .Values.podAnnotations | indent 8 }}
+        {{- end }}
+
+      labels:
+        app: aaasvc
+      {{- if .Values.podLabels }}
+{{ toYaml .Values.podLabels | indent 8 }}
+      {{- end }}
+
+    spec:
+      {{- if .Values.image.pullSecret }}
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecret }}
+      {{- end }}
+      {{- if .Values.securityContext.enabled }}
+      securityContext:
+        runAsUser: {{ .Values.securityContext.runAsUser }}
+        fsGroup: {{ .Values.securityContext.fsGroup }}
+      {{- end }}
+
+      containers:
+        - name: aaasvc
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          command: ["/usr/sbin/aaasvc", "run", "--config=/aaasvc/config/config.json", "--disable-tls"]
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            {{- if .Values.aaasvc.signer }}
+            - name: signer-priv-creds
+              mountPath: "/aaasvc/signer/ssl"
+              readOnly: true
+
+            - name: token-validation
+              mountPath: "/aaasvc/signer/validation"
+              readOnly: true
+            {{- end }}
+
+            {{- if eq .Values.aaasvc.authenticator "userlist" }}
+            - name: userlist-users
+              mountPath: "/aaasvc/authenticator/users"
+              readOnly: true
+            {{- end }}
+
+            {{- if .Values.aaasvc.authenticator }}
+            - name: token-signing
+              mountPath: "/aaasvc/authenticator/signing"
+              readOnly: true
+            {{- end }}
+
+            - name: config
+              mountPath: "/aaasvc/config"
+              readOnly: true
+
+      volumes:
+        {{- if eq .Values.aaasvc.authenticator "userlist" }}
+        - name: userlist-users
+          secret:
+            secretName: {{ required "userlist.userSecret is required" .Values.authenticator.userlist.usersSecret }}
+        {{- end }}
+
+        {{- if .Values.aaasvc.signer }}
+        - name: signer-priv-creds
+          secret:
+            secretName: {{ required "signer.choriaPrivilegedSecretName is required" .Values.signer.choriaPrivilegedSecretName }}
+
+        - name: token-validation
+          secret:
+            secretName: {{ required "signer.tokenValidationSecretName is required" .Values.signer.tokenValidationSecretName }}
+        {{- end }}
+
+        {{- if .Values.aaasvc.authenticator }}
+        - name: token-signing
+          secret:
+            secretName: {{ required "authenticator.tokenSignerSecret is required" .Values.authenticator.tokenSignerSecret }}
+        {{- end }}
+
+        - name: config
+          configMap:
+            name: {{ template "aaasvc.fullname" . }}-config
