@@ -18,6 +18,9 @@ securityContext:
 # additional annotations to apply to pods
 podAnnotations: {}
 
+# adds custom affinity rules to the pods
+podAffinity: {}
+
 # additional labels to apply to pods
 podLabels: {}
 

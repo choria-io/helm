@@ -43,10 +43,14 @@ spec:
       labels:
         app: broker
       {{- if .Values.podLabels }}
-      {{ toYaml .Values.podLabels | indent 8 }}
+{{ toYaml .Values.podLabels | indent 8 }}
     {{- end }}
 
     spec:
+    {{- if .Values.podAffinity }}
+      affinity:
+{{ toYaml .Values.podAffinity | indent 8 }}
+    {{- end }}
       serviceAccount: choria-csraccess
       serviceAccountName: choria-csraccess
       {{- if .Values.image.pullSecret }}
