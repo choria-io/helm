@@ -8,6 +8,37 @@ At start the broker will auto enroll with a Cert Manager managed Certificate Aut
 Please follow the steps outlined in [README.md](../README.md) to create the initial environment
 and add the Choria Helm Repository.
 
+## Pod Affinity
+
+Generally you'd want to run more than one instance of the broker, it does not need to be an odd number,
+and if you do you'd want to ensure the brokers run on different underlying nodes. 
+
+```yaml
+broker:
+  clusterSize: 3
+
+podAffinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+    - labelSelector:
+        matchExpressions:
+        - key: app
+          operator: In
+          values:
+          - broker
+      topologyKey: "kubernetes.io/hostname"
+```
+
+Above will create 3 broker instances and spread them across your kubernetes nodes.
+
+```nohighlight
+$ kubectl get pod -o wide -n choria
+NAME                            READY   STATUS    RESTARTS   AGE     IP           NODE     NOMINATED NODE   READINESS GATES
+broker-0                        1/1     Running   0          2m22s   10.2.2.14    knode1   <none>           <none>
+broker-1                        1/1     Running   0          2m29s   10.2.0.244   knode2   <none>           <none>
+broker-2                        1/1     Running   0          2m43s   10.2.1.82    knode3   <none>           <none>
+```
+
 ## Values
 
 |Variable|Description|Default|
