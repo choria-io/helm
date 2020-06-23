@@ -76,8 +76,26 @@ spec:
             - name: config
               mountPath: "/etc/choria/config"
               readOnly: true
+          {{- if .Values.leafnodes }}
+            {{- range $name, $leaf := .Values.leafnodes }}
+              {{- if $leaf.credentialSecret }}
+            - name: leafnode-{{ $leaf.credentialSecret }}
+              mountPath: /etc/choria/credentials/{{ $leaf.credentialSecret }}
+              readOnly: true
+             {{- end }}
+         {{- end }}
+       {{- end }}
 
       volumes:
         - name: config
           configMap:
             name: {{ template "broker.fullname" . }}
+      {{- if .Values.leafnodes }}
+        {{- range $name, $leaf := .Values.leafnodes }}
+          {{- if $leaf.credentialSecret }}
+        - name: leafnode-{{ $leaf.credentialSecret }}
+          secret:
+            secretName: {{ $leaf.credentialSecret }}
+          {{- end }}
+        {{- end }}
+      {{- end }}

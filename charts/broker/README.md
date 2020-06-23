@@ -49,4 +49,17 @@ broker-2                        1/1     Running   0          2m43s   10.2.1.82  
 |`broker.servicePort`|The port to expose when `broker.createService` is enabled|`4222`|
 |`broker.clusterSize`|The number of pods to start in a cluster|`1`| 
 
+### Leafnodes
+
+You can instruct the broker to connect to a remote network as a Leafnode:
+
+```yaml
+leafnodes:
+  ngs:
+    url: nats-leaf://connect.ngs.global:7422
+    credentialSecret: broker-leafnode-ngs
+```
+
+Here the `broker-leafnode-ngs` secret has NGS credentials in a file calls `connection.creds` inside it.
+
 See `helm show values choria/broker` for full list of available values.

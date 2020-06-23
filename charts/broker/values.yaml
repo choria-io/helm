@@ -31,6 +31,15 @@ prometheus:
   # port to listen on for metrics
   port: 8080
 
+# Leafnodes to conncet to
+#
+#   ngs:
+#     url: nats://connect.ngs.global:7422
+#     credentialSecret: ngsLeafnode
+#
+# The secret should have in it a file connection.creds
+leafnodes: {}
+
 # Broker specific settings
 broker:
   # when running behind a load balancer, Service or other kind of proxy
