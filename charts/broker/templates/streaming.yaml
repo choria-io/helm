@@ -1,17 +1,17 @@
-{{- if .Values.broker.streaming }}
-{{- if .Values.broker.streamingStorageClassName }}
+{{- if .Values.streaming.enabled }}
+{{- if .Values.streaming.storageClassName }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ .Values.broker.streamingStoragePVCName }}
+  name: {{ .Values.streaming.pvcName }}
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: {{ .Values.broker.streamingStoragePVCSize }}
-  storageClassName: {{ .Values.broker.streamingStorageClassName }}
+      storage: {{ .Values.streaming.storageSize }}
+  storageClassName: {{ .Values.streaming.storageClassName }}
 {{- end }}
 
 ---
@@ -67,9 +67,9 @@ spec:
           - mountPath: "/etc/choria/config"
             name: config
             readOnly: true
-        {{- if .Values.broker.streamingStorageClassName }}
+        {{- if .Values.streaming.storageClassName }}
           - mountPath: "/data"
-            name: streaming-data
+            name: {{ .Values.streaming.pvcName }}
             readOnly: false
         {{- end }}
 
@@ -77,9 +77,9 @@ spec:
         - name: config
           configMap:
             name: {{ template "broker.fullname" . }}
-      {{- if .Values.broker.streamingStorageClassName }}
-        - name: streaming-data
+      {{- if .Values.streaming.storageClassName }}
+        - name: {{ .Values.streaming.pvcName }}
           persistentVolumeClaim:
-            claimName: {{ .Values.broker.streamingStoragePVCName }}
+            claimName: {{ .Values.streaming.pvcName }}
       {{- end }}
 {{- end }}
