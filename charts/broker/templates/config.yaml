@@ -7,3 +7,5 @@ metadata:
 data:
   broker.conf: |-
 {{ (tpl (.Files.Get "config/broker.conf") . ) | indent 5 }}
+  streaming.conf: |-
+{{ (tpl (.Files.Get "config/streaming.conf") . ) | indent 5 }}

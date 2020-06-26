@@ -1,0 +1,85 @@
+{{- if .Values.broker.streaming }}
+{{- if .Values.broker.streamingStorageClassName }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.broker.streamingStoragePVCName }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.broker.streamingStoragePVCSize }}
+  storageClassName: {{ .Values.broker.streamingStorageClassName }}
+{{- end }}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stream
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stream
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        {{- if .Values.prometheus.enabled }}
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "{{ .Values.prometheus.port }}"
+        prometheus.io/metric_path: "/choria/prometheus"
+        {{- end }}
+        {{- if .Values.podAnnotations }}
+{{ toYaml .Values.podAnnotations | indent 8 }}
+      {{- end }}
+
+      labels:
+        app: stream
+      {{- if .Values.podLabels }}
+{{ toYaml .Values.podLabels | indent 8 }}
+      {{- end }}
+
+    spec:
+      serviceAccount: choria-csraccess
+      serviceAccountName: choria-csraccess
+      {{- if .Values.image.pullSecret }}
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecret }}
+      {{- end }}
+      {{- if .Values.securityContext.enabled }}
+      securityContext:
+        runAsUser: {{ .Values.securityContext.runAsUser }}
+        runAsGroup: {{ .Values.securityContext.fsGroup }}
+        fsGroup: {{ .Values.securityContext.fsGroup }}
+      {{- end }}
+
+      containers:
+      - name: stream
+        image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        command: ["/bin/choria", "broker", "--config=/etc/choria/config/streaming.conf"]
+        volumeMounts:
+          - mountPath: "/etc/choria/config"
+            name: config
+            readOnly: true
+        {{- if .Values.broker.streamingStorageClassName }}
+          - mountPath: "/data"
+            name: streaming-data
+            readOnly: false
+        {{- end }}
+
+      volumes:
+        - name: config
+          configMap:
+            name: {{ template "broker.fullname" . }}
+      {{- if .Values.broker.streamingStorageClassName }}
+        - name: streaming-data
+          persistentVolumeClaim:
+            claimName: {{ .Values.broker.streamingStoragePVCName }}
+      {{- end }}
+{{- end }}

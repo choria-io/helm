@@ -37,7 +37,7 @@ spec:
         prometheus.io/metric_path: "/choria/prometheus"
         {{- end }}
         {{- if .Values.podAnnotations }}
-        {{ toYaml .Values.podAnnotations | indent 8 }}
+{{ toYaml .Values.podAnnotations | indent 8 }}
       {{- end }}
 
       labels:
@@ -72,6 +72,7 @@ spec:
             - containerPort: {{ .Values.prometheus.port }}
             {{- end }}
             - containerPort: 4222
+            - containerPort: 7422
           volumeMounts:
             - name: config
               mountPath: "/etc/choria/config"
