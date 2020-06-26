@@ -59,3 +59,17 @@ broker:
 
   # The number of pods to create that will form a redundant cluster
   clusterSize: 1
+
+  # Enables Choria Streaming
+  streaming: false
+  # streamingStoragePVCName is the name of the PVC to create
+  streamingStoragePVCName: "streaming"
+  # If set creates a PVC of this class and streamingStoragePVCSize
+  streamingStorageClassName: ""
+  # Size of the created PVC if streamingStorageClassName is set
+  streamingStoragePVCSize: 10Gi
+
+  # How long to retain lifecycle events, 0 disables
+  eventRetention: "1d"
+  # How long to retain Autonomous Agent events - including Scout events, 0 disables
+  stateRetention: "1d"
