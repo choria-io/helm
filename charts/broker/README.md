@@ -48,6 +48,12 @@ broker-2                        1/1     Running   0          2m43s   10.2.1.82  
 |`broker.createService`|When `true` a `Service` that exposes `servicePort` is created|`false`|
 |`broker.servicePort`|The port to expose when `broker.createService` is enabled|`4222`|
 |`broker.clusterSize`|The number of pods to start in a cluster|`1`| 
+|`streaming.enabled`|Enables the Choria Streaming Server|`false`|
+|`streaming.storageClassName`|When set enables creating a PVC for Streaming storage|`""`|
+|`streaming.pvcName`|The name of the PVC to create|`streaming`|
+|`streaming.storageSize`|The size of the PVC to create|`10Gi`|
+|`streaming.eventRetention`|How long to retain lifecycle events for, 0 disables|`24h`|
+|`streaming.stateRetention`|How long to retain Autonomous Agent events - including Scout events, 0 disables|`24h`|
 
 ### Leafnodes
 
