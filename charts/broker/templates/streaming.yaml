@@ -15,18 +15,30 @@ spec:
 {{- end }}
 
 ---
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Service
 metadata:
-  name: stream
+  name: {{ template "stream.fullname" . }}-ss
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: stream
+spec:
+  clusterIP: None
+  selector:
+    app: stream
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ template "stream.fullname" . }}
   namespace: {{ .Values.namespace }}
 spec:
   replicas: 1
+  serviceName: {{ template "stream.fullname" . }}-ss
   selector:
     matchLabels:
       app: stream
-  strategy:
-    type: Recreate
   template:
     metadata:
       annotations:
@@ -65,7 +77,7 @@ spec:
         command: ["/bin/choria", "broker", "--config=/etc/choria/config/streaming.conf"]
         volumeMounts:
           - mountPath: "/etc/choria/config"
-            name: config
+            name: {{ template "stream.fullname" . }}-config
             readOnly: true
         {{- if .Values.streaming.storageClassName }}
           - mountPath: "/data"
@@ -74,7 +86,7 @@ spec:
         {{- end }}
 
       volumes:
-        - name: config
+        - name: {{ template "stream.fullname" . }}-config
           configMap:
             name: {{ template "broker.fullname" . }}
       {{- if .Values.streaming.storageClassName }}

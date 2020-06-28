@@ -2,6 +2,10 @@
 {{- printf "%s" .Release.Name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
+{{- define "stream.fullname" -}}
+{{- printf "%s-stream" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
 {{- define "broker.peers" -}}
 {{- $count := .Values.broker.clusterSize | int -}}
 {{- $last := sub $count 1 -}}
