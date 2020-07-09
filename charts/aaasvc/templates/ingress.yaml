@@ -4,6 +4,7 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: {{ template "aaasvc.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   annotations:
     kubernetes.io/ingress.class: "{{ .Values.aaasvc.ingressClass }}"
     {{- if ne .Values.aaasvc.certManagerIssuer "" }}
