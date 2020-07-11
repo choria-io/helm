@@ -50,6 +50,26 @@ entries:
   broker:
   - apiVersion: v1
     appVersion: 0.14.0
+    created: "2020-07-11T10:55:06.585380629Z"
+    description: Choria Network Broker
+    digest: e3ccc4cbc3d29aad459723bc11f9b500dfaad118d534aad132662d68211f3b0b
+    home: https://choria.io/
+    icon: https://choria.io/img/choria.png
+    keywords:
+    - choria
+    - middleware
+    maintainers:
+    - email: rip@devco.net
+      name: R.I.Pienaar
+      url: https://choria.io
+    name: broker
+    sources:
+    - https://github.com/choria-io/go-choria/
+    urls:
+    - https://github.com/choria-io/helm/releases/download/broker-0.0.11/broker-0.0.11.tgz
+    version: 0.0.11
+  - apiVersion: v1
+    appVersion: 0.14.0
     created: "2020-07-09T20:18:41.568169054Z"
     description: Choria Network Broker
     digest: 350b850c7a3a5d8eae97a44ca2e3fa9da33d9941ca168016ac06b6419dbe1704
@@ -328,6 +348,27 @@ entries:
     - https://github.com/choria-io/helm/releases/download/choria-provisioner-0.0.1/choria-provisioner-0.0.1.tgz
     version: 0.0.1
   provisioner:
+  - apiVersion: v1
+    appVersion: 0.7.1
+    created: "2020-07-11T10:55:06.685047356Z"
+    description: Choria Server Provisioner
+    digest: 5bfd25b3f2067afa6d5143175bf155c1643d3b88e40c5994ea797bc227072ad4
+    home: https://choria.io/
+    icon: https://choria.io/img/choria.png
+    keywords:
+    - choria
+    - iot
+    - provisioning
+    maintainers:
+    - email: rip@devco.net
+      name: R.I.Pienaar
+      url: https://choria.io
+    name: provisioner
+    sources:
+    - https://github.com/choria-io/provisioning-agent/
+    urls:
+    - https://github.com/choria-io/helm/releases/download/provisioner-0.0.11/provisioner-0.0.11.tgz
+    version: 0.0.11
   - apiVersion: v1
     appVersion: 0.7.1
     created: "2020-07-11T10:46:36.283114725Z"
