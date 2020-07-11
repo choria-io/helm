@@ -93,8 +93,8 @@ show these settings are in effect.
 Finally we need to create a Kubernetes Secret holding the Public certificate:
 
 ```nohighlight
-$ kubectl -n choria create configmap jwt-signer-cert --from-file provisioner/jwt-signer-cert
-configmap/jwt-signer-cert created
+$ kubectl -n choria create secret generic jwt-signer-cert --from-file provisioner/jwt-signer-cert
+secret/jwt-signer-cert created
 ```
 
 ### Values
