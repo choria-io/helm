@@ -6,7 +6,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 data:
   client.cfg: |-
-{{ (tpl (.Files.Get "config/client.conf") . ) | indent 5 }}
+{{ (tpl (.Files.Get "config/client.cfg") . ) | indent 5 }}
 
   choria-provisioner.yaml: |-
 {{ (tpl (.Files.Get "config/choria-provisioner.yaml") . ) | indent 4  }}
@@ -73,7 +73,7 @@ spec:
         image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         command: ["/usr/sbin/choria-provisioner"]
-        args: ["--config", "/etc/choria-provisioner/config/choria-provisioner.yaml", "--choria-config", "/etc/choria-provisioner/config/client.conf"]
+        args: ["--config", "/etc/choria-provisioner/config/choria-provisioner.yaml", "--choria-config", "/etc/choria-provisioner/config/client.cfg"]
         ports:
         - containerPort: 4222
           protocol: TCP
