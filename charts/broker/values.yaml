@@ -67,8 +67,11 @@ broker:
   # When true a ClusterIP service will be created exposing servicePort
   createService: false
 
-  # The port for the Servce to expose when servicePort is true
+  # The port for the Service to expose when servicePort is true
   servicePort: 4222
+
+  # when servicePort is true also expose the leafnode service
+  serviceLeafnodePort: 0
 
   # The number of pods to create that will form a redundant cluster
   clusterSize: 1

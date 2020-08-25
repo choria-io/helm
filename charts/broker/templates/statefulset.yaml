@@ -12,6 +12,8 @@ spec:
       name: clients
     - port: 6222
       name: cluster
+    - port: 7422
+      name: leafnodes
   clusterIP: None
   selector:
     app: broker
