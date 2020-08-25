@@ -11,6 +11,11 @@ spec:
     - port: {{ .Values.broker.servicePort }}
       targetPort: 4222
       protocol: TCP
+  {{- if .Values.broker.serviceLeafnodePort gt 0 }}
+    - port: {{ .Values.broker.serviceLeafnodePort }}
+      targetPort: 7422
+      protocol: TCP
+  {{- end }}
   selector:
     app: broker
 {{- end }}
