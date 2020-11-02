@@ -77,6 +77,9 @@ spec:
         - name: storage-init
           image: busybox
           command: ["/bin/chown", "-R", "{{ .Values.securityContext.runAsUser }}:{{ .Values.securityContext.fsGroup }}", "/data"]
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
           volumeMounts:
           {{- if .Values.streaming.storageClassName }}
             - mountPath: "/data"
