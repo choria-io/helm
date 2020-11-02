@@ -52,6 +52,8 @@ streaming:
   eventRetention: 24h
   # How long to retain Autonomous Agent events - including Scout events, 0 disables
   stateRetention: 24h
+  # Use an init container to set the correct permissions for the mount
+  storageInit: false
 
 # Broker specific settings
 broker:

@@ -72,6 +72,19 @@ spec:
         fsGroup: {{ .Values.securityContext.fsGroup }}
       {{- end }}
 
+      {{- if and .Values.streaming.storageInit .Values.streaming.storageClassName }}
+      initContainers:
+        - name: storage-init
+          image: busybox
+          command: ["/bin/chown", "-R", "{{ .Values.securityContext.runAsUser }}:{{ .Values.securityContext.fsGroup }}", "/data"]
+          volumeMounts:
+          {{- if .Values.streaming.storageClassName }}
+            - mountPath: "/data"
+              name: {{ .Values.streaming.pvcName }}
+              readOnly: false
+          {{- end }}
+      {{- end }}
+
       containers:
       - name: stream
         image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
