@@ -3,6 +3,29 @@ entries:
   aaasvc:
   - apiVersion: v1
     appVersion: 0.3.3
+    created: "2020-11-02T09:09:50.340600852Z"
+    description: Choria AAA Server
+    digest: 8cfb864bbe8936b325793e0b481fc1e71a59cfbcc3338e8bcbec8c27955fc4f2
+    home: https://choria.io/
+    icon: https://choria.io/img/choria.png
+    keywords:
+    - choria
+    - iot
+    - authentication
+    - authorization
+    - auditing
+    maintainers:
+    - email: rip@devco.net
+      name: R.I.Pienaar
+      url: https://choria.io
+    name: aaasvc
+    sources:
+    - https://github.com/choria-io/aaasvc/
+    urls:
+    - https://github.com/choria-io/helm/releases/download/aaasvc-0.0.3/aaasvc-0.0.3.tgz
+    version: 0.0.3
+  - apiVersion: v1
+    appVersion: 0.3.3
     created: "2020-07-09T20:18:41.388365912Z"
     description: Choria AAA Server
     digest: 64c80daa491daa7b54792d714936208816fa4f2770ed3586cfdd5618f537ae01
@@ -48,6 +71,26 @@ entries:
     - https://github.com/choria-io/helm/releases/download/aaasvc-0.0.1/aaasvc-0.0.1.tgz
     version: 0.0.1
   broker:
+  - apiVersion: v1
+    appVersion: 0.14.0
+    created: "2020-11-02T09:09:50.578411034Z"
+    description: Choria Network Broker
+    digest: d3e009ddbcb3ff28af6cb9d73b4d3c65153b6e1c80ba03122035d46d19e91823
+    home: https://choria.io/
+    icon: https://choria.io/img/choria.png
+    keywords:
+    - choria
+    - middleware
+    maintainers:
+    - email: rip@devco.net
+      name: R.I.Pienaar
+      url: https://choria.io
+    name: broker
+    sources:
+    - https://github.com/choria-io/go-choria/
+    urls:
+    - https://github.com/choria-io/helm/releases/download/broker-0.0.15/broker-0.0.15.tgz
+    version: 0.0.15
   - apiVersion: v1
     appVersion: 0.14.0
     created: "2020-08-25T14:37:28.642893987Z"
