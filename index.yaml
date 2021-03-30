@@ -2,6 +2,29 @@ apiVersion: v1
 entries:
   aaasvc:
   - apiVersion: v1
+    appVersion: 0.4.0
+    created: "2021-03-30T20:23:06.340238395Z"
+    description: Choria AAA Server
+    digest: 23fc47f4c32ed5e930597d52041e7ae1603ace79844bebe55e0cc87e6c495f17
+    home: https://choria.io/
+    icon: https://choria.io/img/choria.png
+    keywords:
+    - choria
+    - iot
+    - authentication
+    - authorization
+    - auditing
+    maintainers:
+    - email: rip@devco.net
+      name: R.I.Pienaar
+      url: https://choria.io
+    name: aaasvc
+    sources:
+    - https://github.com/choria-io/aaasvc/
+    urls:
+    - https://github.com/choria-io/helm/releases/download/aaasvc-0.0.4/aaasvc-0.0.4.tgz
+    version: 0.0.4
+  - apiVersion: v1
     appVersion: 0.3.3
     created: "2020-11-02T09:09:50.340600852Z"
     description: Choria AAA Server
@@ -71,6 +94,26 @@ entries:
     - https://github.com/choria-io/helm/releases/download/aaasvc-0.0.1/aaasvc-0.0.1.tgz
     version: 0.0.1
   broker:
+  - apiVersion: v1
+    appVersion: 0.21.0
+    created: "2021-03-30T20:23:06.483469473Z"
+    description: Choria Network Broker
+    digest: a65580c18fec1dd59f43b4ba5612a70104d4489e7a0d210c2332fdf1ed846a17
+    home: https://choria.io/
+    icon: https://choria.io/img/choria.png
+    keywords:
+    - choria
+    - middleware
+    maintainers:
+    - email: rip@devco.net
+      name: R.I.Pienaar
+      url: https://choria.io
+    name: broker
+    sources:
+    - https://github.com/choria-io/go-choria/
+    urls:
+    - https://github.com/choria-io/helm/releases/download/broker-0.0.17/broker-0.0.17.tgz
+    version: 0.0.17
   - apiVersion: v1
     appVersion: 0.14.0
     created: "2020-11-02T09:25:06.539159092Z"
@@ -394,6 +437,25 @@ entries:
   ca:
   - apiVersion: v1
     appVersion: 0.0.1
+    created: "2021-03-30T20:23:06.685948658Z"
+    description: Configures Choria CA integration for Cert Manager
+    digest: 06daa8b30457b953977bf4f34f3db48b152633c66a8b746eb0160f691894efbf
+    home: https://choria.io/
+    icon: https://choria.io/img/choria.png
+    keywords:
+    - choria
+    maintainers:
+    - email: rip@devco.net
+      name: R.I.Pienaar
+      url: https://choria.io
+    name: ca
+    sources:
+    - https://github.com/choria-io/helm
+    urls:
+    - https://github.com/choria-io/helm/releases/download/ca-0.0.4/ca-0.0.4.tgz
+    version: 0.0.4
+  - apiVersion: v1
+    appVersion: 0.0.1
     created: "2020-07-09T20:18:41.747353077Z"
     description: Configures Choria CA integration for Cert Manager
     digest: 32833dccee99edae9c69768178cb6a726715d13c52fd423aff5d53257777ab7a
@@ -471,6 +533,27 @@ entries:
     - https://github.com/choria-io/helm/releases/download/choria-provisioner-0.0.1/choria-provisioner-0.0.1.tgz
     version: 0.0.1
   provisioner:
+  - apiVersion: v1
+    appVersion: 0.7.1
+    created: "2021-03-30T20:23:06.862376429Z"
+    description: Choria Server Provisioner
+    digest: d2e9f687001735848910bc3a950255f525b8e9bf5a40581d7341b176e3ba2613
+    home: https://choria.io/
+    icon: https://choria.io/img/choria.png
+    keywords:
+    - choria
+    - iot
+    - provisioning
+    maintainers:
+    - email: rip@devco.net
+      name: R.I.Pienaar
+      url: https://choria.io
+    name: provisioner
+    sources:
+    - https://github.com/choria-io/provisioning-agent/
+    urls:
+    - https://github.com/choria-io/helm/releases/download/provisioner-0.0.12/provisioner-0.0.12.tgz
+    version: 0.0.12
   - apiVersion: v1
     appVersion: 0.7.1
     created: "2020-07-11T10:55:06.685047356Z"
@@ -640,6 +723,26 @@ entries:
     - https://github.com/choria-io/helm/releases/download/provisioner-0.0.2/provisioner-0.0.2.tgz
     version: 0.0.2
   tally:
+  - apiVersion: v1
+    appVersion: 0.0.2
+    created: "2021-03-30T20:23:07.017486269Z"
+    description: Choria Network Tally
+    digest: 1f42d336cc9c3e384870687d4c64530a820096f278acca5c8a04761d20672fe3
+    home: https://choria.io/
+    icon: https://choria.io/img/choria.png
+    keywords:
+    - choria
+    - middleware
+    maintainers:
+    - email: rip@devco.net
+      name: R.I.Pienaar
+      url: https://choria.io
+    name: tally
+    sources:
+    - https://github.com/choria-io/tally/
+    urls:
+    - https://github.com/choria-io/helm/releases/download/tally-0.0.4/tally-0.0.4.tgz
+    version: 0.0.4
   - apiVersion: v1
     appVersion: 0.0.2
     created: "2020-07-09T20:18:42.085643148Z"
