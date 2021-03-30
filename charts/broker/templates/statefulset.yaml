@@ -62,8 +62,24 @@ spec:
       {{- if .Values.securityContext.enabled }}
       securityContext:
         runAsUser: {{ .Values.securityContext.runAsUser }}
+        runAsGroup: {{ .Values.securityContext.fsGroup }}
         fsGroup: {{ .Values.securityContext.fsGroup }}
       {{- end }}
+
+  {{- if .Values.streaming.enabled }}
+  {{- if .Values.streaming.storageClassName }}
+      initContainers:
+        - name: storage-configure
+          image: busybox:latest
+          command: ['sh', '-c', 'chown -R {{ .Values.securityContext.runAsUser }}:{{ .Values.securityContext.fsGroup }} /data']
+          securityContext:
+            runAsUser: 0
+          volumeMounts:
+            - mountPath: "/data"
+              name: {{ .Values.streaming.pvcName }}
+              readOnly: false
+  {{- end }}
+  {{- end }}
 
       containers:
         - name: broker
@@ -79,6 +95,14 @@ spec:
             - name: config
               mountPath: "/etc/choria/config"
               readOnly: true
+          {{- if .Values.streaming.enabled }}
+          {{- if .Values.streaming.storageClassName }}
+            - mountPath: "/data"
+              name: {{ .Values.streaming.pvcName }}
+              readOnly: false
+          {{- end }}
+          {{- end }}
+
           {{- if .Values.leafnodes }}
             {{- range $name, $leaf := .Values.leafnodes }}
               {{- if $leaf.credentialSecret }}
@@ -102,3 +126,18 @@ spec:
           {{- end }}
         {{- end }}
       {{- end }}
+{{- if .Values.streaming.enabled }}
+{{- if .Values.streaming.storageClassName }}
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Values.streaming.pvcName }}
+      namespace: {{ .Release.Namespace }}
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: {{ .Values.streaming.storageSize }}
+      storageClassName: {{ .Values.streaming.storageClassName }}
+{{- end }}
+{{- end }}

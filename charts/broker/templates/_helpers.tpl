@@ -1,9 +1,5 @@
 {{- define "broker.fullname" -}}
-{{- printf "%s-%s" .Release.Name .Chart.Name | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
-
-{{- define "stream.fullname" -}}
-{{- printf "%s-%s-stream" .Release.Name .Chart.Name | trunc 63 | trimSuffix "-" -}}
+{{- printf "%s-%s" $.Release.Name .Chart.Name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{- define "broker.peers" -}}
