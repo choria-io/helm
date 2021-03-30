@@ -6,5 +6,9 @@ Choria Broker
 {{- if and .Values.broker.publicName .Values.broker.servicePort }}
 	 Public Name: {{ .Values.broker.publicName }}:{{ .Values.broker.servicePort }}
 {{- end }}
+      Choria Streams: {{ .Values.streaming.enabled }}
+{{- if and .Values.broker.systemUser .Values.broker.systemPassword }}
+      System Account: {{ .Values.broker.systemUser }} / ******
+{{- end }}
 
 For more information please visit https://choria.io
