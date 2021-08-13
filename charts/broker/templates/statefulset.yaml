@@ -110,13 +110,24 @@ spec:
               mountPath: /etc/choria/credentials/{{ $leaf.credentialSecret }}
               readOnly: true
              {{- end }}
-         {{- end }}
-       {{- end }}
+            {{- end }}
+          {{- end }}
+
+          {{- if .Values.provisioning }}
+            - name: provisioner-signer-cert
+              mountPath: /etc/choria/provisioner/signer-cert
+              readOnly: true
+          {{- end }}
 
       volumes:
         - name: config
           configMap:
             name: {{ template "broker.fullname" . }}
+      {{- if .Values.provisioning }}
+        - name: provisioner-signer-cert
+          secret:
+            secretName: {{ required "provisioning.tokenSignerSecret is required" .Values.provisioning.tokenSignerSecret }}
+      {{- end }}
       {{- if .Values.leafnodes }}
         {{- range $name, $leaf := .Values.leafnodes }}
           {{- if $leaf.credentialSecret }}
