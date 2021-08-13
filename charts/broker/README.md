@@ -55,6 +55,37 @@ broker-2                        1/1     Running   0          2m43s   10.2.1.82  
 |`streaming.storageSize`|The size of the PVC to create|`10Gi`|
 |`streaming.eventRetention`|How long to retain lifecycle events for, 0 disables|`24h`|
 |`streaming.stateRetention`|How long to retain Autonomous Agent events - including Scout events, 0 disables|`24h`|
+|`provisioning.provisionerPassword`|Password for Choria Provisioner to connect|`""`|
+|`provisioning.tokenSignerSecret`|Secret holding the public certificate that signed the `provisioner.jwt` on nodes|`""`|
+
+### Provisioning
+
+The Broker can host the Choria Provisioner used to Provision new nodes.
+
+**NOTE:** Requires Choria Server version 0.23.0 at least
+
+To do this a secret needs to be made holding the Public Certificate of the `provisioning.jwt` signer.
+
+```nohighlight
+$ find broker
+broker/provisioning/signer-cert
+broker/provisioning/signer-cert/cert.pem
+```
+
+Now we create the secret:
+
+```nohighlight
+$ kubectl -n choria create secret generic provisioning-signer-cert --from-file broker/provisioning/signer-cert
+secret/provisioning-signer-cert created
+```
+
+We can then enable provisioning by setting the `provisioning` values:
+
+```yaml
+provisioning:
+  provisionerPassword: tooManySecrets
+  tokenSignerSecret: provisioning-signer-cert
+```
 
 ### Leafnodes
 
