@@ -95,6 +95,26 @@ entries:
     version: 0.0.1
   broker:
   - apiVersion: v1
+    appVersion: 0.22.0
+    created: "2021-08-13T11:19:46.410475519Z"
+    description: Choria Network Broker
+    digest: f79cafaeed40eba1bcb96a5efce62300a11ced9bf2bdcfa17095a14d886a5479
+    home: https://choria.io/
+    icon: https://choria.io/img/choria.png
+    keywords:
+    - choria
+    - middleware
+    maintainers:
+    - email: rip@devco.net
+      name: R.I.Pienaar
+      url: https://choria.io
+    name: broker
+    sources:
+    - https://github.com/choria-io/go-choria/
+    urls:
+    - https://github.com/choria-io/helm/releases/download/broker-0.0.18/broker-0.0.18.tgz
+    version: 0.0.18
+  - apiVersion: v1
     appVersion: 0.21.0
     created: "2021-03-30T20:23:06.483469473Z"
     description: Choria Network Broker
