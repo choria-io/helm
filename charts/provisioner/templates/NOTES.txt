@@ -20,7 +20,7 @@ Active Configuration:
   Broker:
 
               Broker URL: {{ .Values.broker.url }}
-    {{- if .Values.auth.provisioner }}
+    {{- if .Values.broker.provisionerPassword }}
     Provisioner Password: ****
     {{- end }}
     {{- if .Values.broker.connectionSecret }}
