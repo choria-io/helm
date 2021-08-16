@@ -2,7 +2,6 @@
 workers: {{ .Values.provisioner.workers }}
 interval: {{ .Values.provisioner.interval }}
 loglevel: {{ .Values.provisioner.loglevel }}
-choria_insecure: {{ .Values.provisioner.insecure }}
 site: {{ .Release.Name }}
 {{- if .Values.prometheus.enabled }}
 monitor_port: 8080
@@ -13,17 +12,12 @@ jwt_verify_cert: /etc/choria-provisioner/signer/signer.pem
 logfile: /dev/stdout
 helper: /helper/provision-helper
 token: {{ .Values.provisioner.token }}
-{{- if .Values.broker.embedded }}
-{{- if .Values.auth.provisioner }}
-broker_provisioning_password: {{ .Values.auth.provisioner }}
+{{- if .Values.broker.provisionerPassword }}
+broker_provisioning_password: {{ .Values.broker.provisionerPassword }}
 {{- end }}
-{{- if .Values.auth.choria }}
-broker_choria_password: {{ .Values.auth.choria }}
+{{- if and (.Values.replicas) (gt (.Values.replicas | int) 1) }}
+leader_election_name: PROVISIONER
 {{- end }}
-broker_port: 4222
-{{- end }}
-
 features:
   pki: {{ .Values.pki.enabled }}
   jwt: {{ .Values.jwt.enabled }}
-  broker: {{ .Values.broker.embedded }}
