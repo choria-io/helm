@@ -11,23 +11,6 @@ data:
   choria-provisioner.yaml: |-
 {{ (tpl (.Files.Get "config/choria-provisioner.yaml") . ) | indent 4  }}
 
-{{- if .Values.broker.createService }}
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ template "provisioner.fullname" . }}
-  namespace: {{ .Release.Namespace }}
-spec:
-  type: ClusterIP
-  ports:
-  - port: {{ .Values.broker.port }}
-    targetPort: 4222
-    protocol: TCP
-  selector:
-    app: provisioner
-{{- end }}
-
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -35,7 +18,7 @@ metadata:
   name: {{ template "provisioner.fullname" . }}
   namespace: {{ .Release.Namespace }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
       app: provisioner
@@ -74,9 +57,6 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         command: ["/usr/sbin/choria-provisioner"]
         args: ["--config", "/etc/choria-provisioner/config/choria-provisioner.yaml", "--choria-config", "/etc/choria-provisioner/config/client.cfg"]
-        ports:
-        - containerPort: 4222
-          protocol: TCP
         volumeMounts:
         {{- if or .Values.jwt.signerSecret }}
         - name: signer

@@ -5,6 +5,7 @@ Choria Provisioner
 Active Configuration:
 
                 Site: {{ .Release.Name }}
+            Replicas: {{ .Values.replicas }}
              Workers: {{ .Values.provisioner.workers }}
             Interval: {{ .Values.provisioner.interval }}
     Helper ConfigMap: {{ .Values.helper.configMap }}
@@ -14,18 +15,13 @@ Active Configuration:
 
         JWT Verification: {{ .Values.jwt.enabled }}
            PKI Enrolment: {{ .Values.pki.enabled }}
-         Embedded Broker: {{ .Values.broker.embedded }}
      Prometheus Exporter: {{ .Values.prometheus.enabled }}
 
   Broker:
 
               Broker URL: {{ .Values.broker.url }}
-         Cluster Service: {{ .Values.broker.createService }}
     {{- if .Values.auth.provisioner }}
     Provisioner Password: ****
-    {{- end }}
-    {{- if .Values.auth.provisioner }}
-         Choria Password: ****
     {{- end }}
     {{- if .Values.broker.connectionSecret }}
           Connection TLS: {{ .Values.broker.connectionSecret }}

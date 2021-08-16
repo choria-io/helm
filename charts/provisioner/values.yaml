@@ -2,7 +2,7 @@
 image:
   registry: docker.io
   repository: choria/provisioner
-  tag: 0.7.1
+  tag: 0.11.0
   pullPolicy: Always
   pullSecret: ""
 
@@ -18,6 +18,9 @@ podAnnotations: {}
 # additional labels to apply to pods
 podLabels: {}
 
+# how many instances of the service to run, requires provisioner.leader_election_name
+replicas: 1
+
 # enables the PKI integration feature which can enroll nodes into a cert-manager managed CA
 pki:
   enabled: true
@@ -27,16 +30,12 @@ pki:
 
 # configures the connection to the Choria Broker
 broker:
-  # enables running an embedded broker so no additional software is needed
-  embedded: true
-  # creates a Service resource to expose the port to the cluster using a ClusterPort
-  createService: true
-  # the port to expose the broker on in the Service
-  port: 4223
   # url to find the Choria Broker on, localhost when embedded else a url to a remove broker
-  url: nats://localhost:4222
+  url: ""
   # if the remote broker requires TLS this secret should hold cert.pem, key.pem and ca.pem
   connectionSecret: ""
+  # password for the "provisioner" user, used to connect to the broker
+  provisionerPassword: ""
 
 # validates incoming nodes using their JWT
 jwt:
@@ -45,13 +44,6 @@ jwt:
   # when enabled this secret should hold in signer.pem the public cert of the signer
   # of JWT tokens, only nodes that validate against this certificate can be provisioned
   signerSecret: jwt-signer-cert
-
-# configures authentication for the embedded Choria Broker
-auth:
-  # password for the "provisioner" user
-  provisioner: ""
-  # password for the "choria" user
-  choria: ""
 
 # configures exposing of prometheus data on /metrics
 prometheus:
@@ -76,11 +68,7 @@ provisioner:
   # the log level to log at
   loglevel: info
 
-  # the token used to acces the provisioning agent
+  # the token used to access the provisioning agent
   token: ""
-
-  # when true does not use choria security protocol to communicate with
-  # unprovisioned nodes, does not use TLS to communicate with the broker
-  insecure: true
 
   certManagerIssuer: "choria-ca"
