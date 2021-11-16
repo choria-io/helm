@@ -13,6 +13,9 @@
 {{- if eq .Values.aaasvc.signer "basicjwt" }}
   "basicjwt_signer": {
     "signing_certificate": "/aaasvc/signer/validation/cert.pem",
+  {{- if .Values.signer.basicjwt.choriaService }}
+    "choria_service": true,
+  {{- end }}
     "max_validity": "{{ default .Values.signer.basicjwt.maxValidaity "2h" }}"
   },
 {{- end }}

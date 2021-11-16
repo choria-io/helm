@@ -37,6 +37,10 @@ signer:
 
   basicjwt:
     maxValidity: 2h
+    # When true a Service on the Choria network will be started that can serve signing
+    # requests over the Choria network. This means in the edge DCs no Load Balancers or
+    # additional ports will be needed
+    choriaService: true
 
 # configures auditors
 auditor:
