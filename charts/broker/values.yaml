@@ -65,6 +65,8 @@ streaming:
 
 # Broker specific settings
 broker:
+  loglevel: info
+
   # when running behind a load balancer, Service or other kind of proxy
   # the name advertised to Choria nodes should match the public reachable
   # name.  If behind those, please set this to your public DNS name
@@ -85,3 +87,12 @@ broker:
 
   # The number of pods to create that will form a redundant cluster
   clusterSize: 1
+
+  # AAA Signer Public Certificate, use this to allow TLS-free access to users
+  # with valid JWT tokens issued by the aaasvc service.
+  #
+  # This will use the aaasvc-signer-cert secret to verify clients, the secret
+  # should already be there if the aaasvc is deployed in this namespace else
+  # follow the instructions in the aaasvc chart to add the aaasvc-signer-cert
+  # secret
+  allowAAAServiceTokenClients: false
