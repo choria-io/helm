@@ -119,6 +119,11 @@ spec:
               readOnly: true
           {{- end }}
 
+          {{- if .Values.broker.allowAAAServiceTokenClients }}
+            - name: aaasvc-signer-cert
+              mountPath: /etc/choria/aaasvc/signer-cert
+              readOnly: true
+          {{- end }}
       volumes:
         - name: config
           configMap:
@@ -128,6 +133,12 @@ spec:
           secret:
             secretName: {{ required "provisioning.tokenSignerSecret is required" .Values.provisioning.tokenSignerSecret }}
       {{- end }}
+      {{- if .Values.broker.allowAAAServiceTokenClients }}
+        - name: aaasvc-signer-cert
+          secret:
+            secretName: aaasvc-signer-cert
+      {{- end }}
+
       {{- if .Values.leafnodes }}
         {{- range $name, $leaf := .Values.leafnodes }}
           {{- if $leaf.credentialSecret }}

@@ -1,7 +1,7 @@
 apiVersion: v1
 name: broker
-version: 0.0.18
-appVersion: 0.22.0
+version: 0.0.19
+appVersion: 0.25.0
 description: Choria Network Broker
 keywords:
   - choria
