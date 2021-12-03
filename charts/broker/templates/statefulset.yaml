@@ -84,7 +84,7 @@ spec:
       containers:
         - name: broker
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          command: ["/bin/choria", "broker", "--config=/etc/choria/config/broker.conf"]
+          command: ["/bin/choria", "broker", "run", "--config=/etc/choria/config/broker.conf"]
           ports:
             {{- if .Values.prometheus.enabled }}
             - containerPort: {{ .Values.prometheus.port }}
