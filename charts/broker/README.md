@@ -49,6 +49,7 @@ broker-2                        1/1     Running   0          2m43s   10.2.1.82  
 |`broker.servicePort`|The port to expose when `broker.createService` is enabled|`4222`|
 |`broker.clusterSize`|The number of pods to start in a cluster|`1`|
 |`broker.serviceLeafnodePort`|When > 0 and `broker.createService` is true expose the leafnode port on this port|`0`|
+|`broker.resources`|Define the containers resources (requests and limits)|`{}`|
 |`streaming.enabled`|Enables the Choria Streaming Server|`false`|
 |`streaming.storageClassName`|When set enables creating a PVC for Streaming storage|`""`|
 |`streaming.pvcName`|The name of the PVC to create|`streaming`|

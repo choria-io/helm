@@ -96,3 +96,6 @@ broker:
   # follow the instructions in the aaasvc chart to add the aaasvc-signer-cert
   # secret
   allowAAAServiceTokenClients: false
+
+  # Deifne the broker containers resources
+  resources: {}
