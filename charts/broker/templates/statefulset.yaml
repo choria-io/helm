@@ -102,6 +102,10 @@ spec:
               readOnly: false
           {{- end }}
           {{- end }}
+          {{- if .Values.broker.resources }}
+          resources:
+{{ toYaml .Values.broker.resources | indent 12 }}
+          {{- end }}
 
           {{- if .Values.leafnodes }}
             {{- range $name, $leaf := .Values.leafnodes }}
