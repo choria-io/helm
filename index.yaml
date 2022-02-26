@@ -116,6 +116,31 @@ entries:
     urls:
     - https://github.com/choria-io/helm/releases/download/aaasvc-0.0.1/aaasvc-0.0.1.tgz
     version: 0.0.1
+  asyncjobs-task-scheduler:
+  - apiVersion: v1
+    appVersion: 0.5.0
+    created: "2022-02-26T15:14:16.046416543Z"
+    description: Choria Asynchronous Jobs Task Scheduler
+    digest: 68887afebb3bf4007d4733d057de6a18701c1e31ce4bf5f889fb3d25faacd43c
+    home: https://github.com/choria-io/asyncjobs
+    icon: https://choria.io/img/choria.png
+    keywords:
+    - choria
+    - middleware
+    - go
+    - golang
+    - scheduler
+    - asynchronous
+    maintainers:
+    - email: rip@devco.net
+      name: R.I.Pienaar
+      url: https://choria.io
+    name: asyncjobs-task-scheduler
+    sources:
+    - https://github.com/choria-io/asyncjobs
+    urls:
+    - https://github.com/choria-io/helm/releases/download/asyncjobs-task-scheduler-0.0.1/asyncjobs-task-scheduler-0.0.1.tgz
+    version: 0.0.1
   broker:
   - apiVersion: v1
     appVersion: 0.25.0
