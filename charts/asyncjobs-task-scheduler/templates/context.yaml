@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "ajcts.fullname" . }}-context
+  namespace: {{ .Release.Namespace }}
+data:
+  AJC.json: |-
+{{ .Values.taskScheduler.context | toJson | indent 5 }}

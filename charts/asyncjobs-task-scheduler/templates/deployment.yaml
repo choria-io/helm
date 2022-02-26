@@ -1,0 +1,66 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "ajcts.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.taskScheduler.replicas }}
+  selector:
+    matchLabels:
+      app: asyncjobs-task-scheduler
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        {{- if .Values.prometheus.enabled }}
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        {{- end }}
+        {{- if .Values.podAnnotations }}
+{{ toYaml .Values.podAnnotations | indent 8 }}
+        {{- end }}
+
+      labels:
+        app: asyncjobs-task-scheduler
+      {{- if .Values.podLabels }}
+{{ toYaml .Values.podLabels | indent 8 }}
+      {{- end }}
+
+    spec:
+      {{- if .Values.image.pullSecret }}
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecret }}
+      {{- end }}
+      securityContext:
+        runAsUser: 2048
+        fsGroup: 2048
+
+      containers:
+        - name: asyncjobs-task-scheduler
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          command: ["/bin/sh","-c"]
+          args:
+           - "/usr/bin/ajc task cron scheduler ${HOSTNAME} --monitor 8080"
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: context
+              mountPath: "/home/asyncjobs/.config/nats/context"
+              readOnly: true
+          {{- if .Values.taskScheduler.sslSecret }}
+            - name: ssl-secret
+              mountPath: "/etc/asyncjobs/secret"
+              readOnly: true
+          {{- end }}
+
+      volumes:
+        - name: context
+          configMap:
+            name: {{ template "ajcts.fullname" . }}-context
+        {{- if .Values.taskScheduler.sslSecret }}
+        - name: ssl-secret
+          secret:
+            secretName: "{{ .Values.taskScheduler.sslSecret }}"
+        {{- end }}
