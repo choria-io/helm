@@ -40,7 +40,7 @@ In my case the context is made using this:
 
 ```
 taskScheduler:
-  sslSecret: task-scheduler-tls
+  contextSecret: task-scheduler-tls
   context:
     url: nats://broker-broker-ss:4222
     ca: /etc/asyncjobs/secret/ca.crt
@@ -53,16 +53,16 @@ Valid keys are: `url`, `token`, `user`, `password`, `creds` (path to a file), `n
 
 ## Values
 
-| Variable                  | Description                                                      | Default            |
-|---------------------------|------------------------------------------------------------------|--------------------|
-| `image.registry`          | Domain name of the docker registry hosting your image            | `docker.io`        |
-| `image.repository`        | The docker repository with the image                             | `choria/asyncjobs` |
-| `image.tag`               | The tag to deploy                                                | `latest`           |
-| `image.pullPolicy`        | The kubernetes pull policy to use                                | `Always`           |
-| `image.pullSecret`        | If you need a secret to access a private repository specify here | `""`               |
-| `podAnnotations`          | Additional annotations to apply to the pod                       | `{}`               |
-| `podLabels`               | Additional labels to apply to the pod                            | `{}`               |
-| `prometheus.enabled`      | Add annotations for prometheus discovery                         | `true`             |
-| `taskScheduler.replicas`  | How many instances to run                                        | `2`                |
-| `taskScheduler.sslSecret` | An optional secret to mount onto `/etc/asyncjobs/secret`         | `""`               |
-| `taskScheduler.context`   | A required NATS connection context, see above                    | `{}`               |
+| Variable                      | Description                                                      | Default            |
+|-------------------------------|------------------------------------------------------------------|--------------------|
+| `image.registry`              | Domain name of the docker registry hosting your image            | `docker.io`        |
+| `image.repository`            | The docker repository with the image                             | `choria/asyncjobs` |
+| `image.tag`                   | The tag to deploy                                                | `latest`           |
+| `image.pullPolicy`            | The kubernetes pull policy to use                                | `Always`           |
+| `image.pullSecret`            | If you need a secret to access a private repository specify here | `""`               |
+| `podAnnotations`              | Additional annotations to apply to the pod                       | `{}`               |
+| `podLabels`                   | Additional labels to apply to the pod                            | `{}`               |
+| `prometheus.enabled`          | Add annotations for prometheus discovery                         | `true`             |
+| `taskScheduler.replicas`      | How many instances to run                                        | `2`                |
+| `taskScheduler.contextSecret` | An optional secret to mount onto `/etc/asyncjobs/secret`         | `""`               |
+| `taskScheduler.context`       | A required NATS connection context, see above                    | `{}`               |
