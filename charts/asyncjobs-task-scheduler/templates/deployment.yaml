@@ -49,8 +49,8 @@ spec:
             - name: context
               mountPath: "/home/asyncjobs/.config/nats/context"
               readOnly: true
-          {{- if .Values.taskScheduler.sslSecret }}
-            - name: ssl-secret
+          {{- if .Values.taskScheduler.contextSecret }}
+            - name: context-secret
               mountPath: "/etc/asyncjobs/secret"
               readOnly: true
           {{- end }}
@@ -59,8 +59,8 @@ spec:
         - name: context
           configMap:
             name: {{ template "ajcts.fullname" . }}-context
-        {{- if .Values.taskScheduler.sslSecret }}
-        - name: ssl-secret
+        {{- if .Values.taskScheduler.contextSecret }}
+        - name: context-secret
           secret:
-            secretName: "{{ .Values.taskScheduler.sslSecret }}"
+            secretName: "{{ .Values.taskScheduler.contextSecret }}"
         {{- end }}

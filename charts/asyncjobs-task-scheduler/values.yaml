@@ -22,7 +22,7 @@ taskScheduler:
   replicas: 2
 
   # if set mounts the secret on /etc/asyncjobs/secret
-  sslSecret: ~
+  contextSecret: ~
 
   # configures the connection to NATS JetStream
   context: {}
