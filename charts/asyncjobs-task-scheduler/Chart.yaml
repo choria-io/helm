@@ -1,0 +1,21 @@
+apiVersion: v1
+name: asyncjobs-task-scheduler
+version: 0.0.1
+appVersion: 0.5.0
+description: Choria Asynchronous Jobs Task Scheduler
+keywords:
+  - choria
+  - middleware
+  - go
+  - golang
+  - scheduler
+  - asynchronous
+home: https://github.com/choria-io/asyncjobs
+sources:
+  - https://github.com/choria-io/asyncjobs
+maintainers:
+  - name: R.I.Pienaar
+    email: rip@devco.net
+    url: https://choria.io
+icon: https://choria.io/img/choria.png
+

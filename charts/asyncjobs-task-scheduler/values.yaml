@@ -1,0 +1,28 @@
+# details about where to get the image and secret to use for it
+image:
+  registry: docker.io
+  repository: choria/asyncjobs
+  tag: latest
+  pullPolicy: Always
+  pullSecret: ""
+
+# additional annotations to apply to pods
+podAnnotations: {}
+
+# additional labels to apply to pods
+podLabels: {}
+
+# configures exposing of prometheus data on /metrics
+prometheus:
+  # sets annotations for prometheus discovery
+  enabled: true
+
+taskScheduler:
+  # run multiple instances, leader election will elect one of them active
+  replicas: 2
+
+  # if set mounts the secret on /etc/asyncjobs/secret
+  sslSecret: ~
+
+  # configures the connection to NATS JetStream
+  context: {}
