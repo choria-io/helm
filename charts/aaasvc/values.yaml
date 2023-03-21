@@ -1,8 +1,8 @@
 # details about where to get the image and secret to use for it
 image:
-  registry: docker.io
+  registry: registry.choria.io
   repository: choria/aaasvc
-  tag: 0.3.3
+  tag: 0.6.1
   pullPolicy: Always
   pullSecret: ""
 

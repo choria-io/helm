@@ -1,6 +1,6 @@
 # details about where to get the image and secret to use for it
 image:
-  registry: docker.io
+  registry: registry.choria.io
   repository: choria/choria
   tag: latest
   pullPolicy: Always
