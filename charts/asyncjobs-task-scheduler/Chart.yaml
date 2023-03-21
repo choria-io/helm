@@ -1,7 +1,7 @@
 apiVersion: v1
 name: asyncjobs-task-scheduler
-version: 0.0.2
-appVersion: 0.0.6
+version: 0.0.3
+appVersion: 0.1.2
 description: Choria Asynchronous Jobs Task Scheduler
 keywords:
   - choria

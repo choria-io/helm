@@ -1,7 +1,7 @@
 apiVersion: v1
 name: aaasvc
-version: 0.0.5
-appVersion: 0.6.0
+version: 0.0.7
+appVersion: 0.6.1
 description: Choria AAA Server
 keywords:
 - choria
